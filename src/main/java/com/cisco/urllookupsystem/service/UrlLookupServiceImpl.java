@@ -19,6 +19,7 @@ public class UrlLookupServiceImpl implements UrlLookUpService {
 
     @Override
     public Url findUrl(String hostName) {
+        log.info("Inside service impl method findUrl ");
         Url url = urlRepository.findByHostName(hostName);
         return url;
     }
@@ -31,7 +32,7 @@ public class UrlLookupServiceImpl implements UrlLookUpService {
 
     @Override
     public DecisionCode makeDescion(Url url) {
-
+        log.info("Inside service impl method makeDescion");
         DecisionCode decisionCode = DecisionCode.ALLOW;
 
         for (UrlProfile urlProfile : url.getUrlProfileList()) {
@@ -39,6 +40,7 @@ public class UrlLookupServiceImpl implements UrlLookUpService {
                 decisionCode = DecisionCode.BLOCK;
             }
         }
+        log.info("the descion made is  - " + decisionCode);
         return decisionCode;
     }
 }

@@ -28,14 +28,18 @@ public class UrlLookUpController {
     @RequestMapping(path = "/1/hostname_and_port/original_path_and_query_string", method = RequestMethod.GET)
     public UrlLookUpResponse findUrlDetails(@RequestParam("hostname") String hostName, @RequestParam("port") String port, @RequestParam("originalpath") String originalpath, @RequestParam("query") String query) {
 
+        log.info("Inside findUrlDetails resounce method");
+
         //Invalid parameter check
         if (StringUtils.isEmpty(hostName) || StringUtils.isEmpty(port) || StringUtils.isEmpty(originalpath) || StringUtils.isEmpty(query)) {
+            log.info("Invalid host name - " + hostName);
             throw new InvalidInputException("Invalid request parameter's");
         }
         //Service call to retrive Url details
         Url url = urlLookUpService.findUrl(hostName);
 
         if (url == null) {
+            log.info("Url records not found for the host name - " + hostName);
             throw new UrlRecordNotFound("No records found");
         }
         //Prepare response
@@ -44,6 +48,7 @@ public class UrlLookUpController {
     }
 
     private UrlLookUpResponse convertRespose(Url url, String originalPath, String port) {
+        log.info("Inside convertResponse method");
         DomainDetails domainDetails = new DomainDetails();
         DomainDetails.setServiceUrlList(domainDetails, url.getUrlProfileList());
         DecisionCode descionStatus = urlLookUpService.makeDescion(url);
